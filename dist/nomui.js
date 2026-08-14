@@ -28511,14 +28511,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } = this.props;
       let sortableProps = sortable;
       if (sortable) {
-        sortableProps = Component.extendProps(
-          {
-            onEnd: () => {
-              this._onValueChange();
-            },
+        const sortableOnEnd = isFunction(sortable.onEnd)
+          ? sortable.onEnd
+          : null;
+        sortableProps = Component.extendProps(sortable, {
+          onEnd: (args) => {
+            const { oldIndex, newIndex } = args.event;
+            const data = this.listRef.props.data;
+            data.splice(newIndex, 0, data.splice(oldIndex, 1)[0]);
+            this._onValueChange();
+            sortableOnEnd && sortableOnEnd(args);
           },
-          sortable
-        );
+        });
       }
       const dataList = {
         component: DataList,
