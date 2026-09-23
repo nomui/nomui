@@ -7409,6 +7409,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           "nom-modal-mask-animate-show": animate,
           "nom-modal-adapt-to-fit": adaptToFit,
+          "nom-layer": true,
         },
         children: {
           component: ModalDialog,
@@ -7457,7 +7458,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }, 90);
     }
     setzIndex() {
-      this.element.style.zIndex = getzIndex();
+      this._zIndex = getzIndex();
+      this.element.style.zIndex = this._zIndex;
     }
     checkScrollbar() {
       const fullWindowWidth = window.innerWidth;
@@ -20492,6 +20494,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-drawer-absolute": _reference !== document.body,
           [`nom-drawer-${settle}`]: true,
           [`nom-drawer-animate-${settle}-show`]: animate,
+          "nom-layer": true,
         },
         children: [
           {
@@ -20615,7 +20618,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return el;
     }
     setzIndex() {
-      this.element.style.zIndex = getzIndex();
+      this._zIndex = getzIndex();
+      this.element.style.zIndex = this._zIndex;
     }
     checkScrollbar() {
       const fullWindowWidth = window.innerWidth;
