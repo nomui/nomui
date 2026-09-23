@@ -32,6 +32,7 @@ class Modal extends Component {
       classes: {
         'nom-modal-mask-animate-show': animate,
         'nom-modal-adapt-to-fit': adaptToFit,
+        'nom-layer': true,
       },
       children: {
         component: ModalDialog,
@@ -93,7 +94,8 @@ class Modal extends Component {
   }
 
   setzIndex() {
-    this.element.style.zIndex = getzIndex()
+    this._zIndex = getzIndex()
+    this.element.style.zIndex = this._zIndex
   }
 
   checkScrollbar() {
