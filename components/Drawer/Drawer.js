@@ -61,6 +61,7 @@ class Drawer extends Component {
         'nom-drawer-absolute': _reference !== document.body,
         [`nom-drawer-${settle}`]: true,
         [`nom-drawer-animate-${settle}-show`]: animate,
+        'nom-layer': true,
       },
       children: [
         {
@@ -199,7 +200,8 @@ class Drawer extends Component {
   }
 
   setzIndex() {
-    this.element.style.zIndex = getzIndex()
+    this._zIndex = getzIndex()
+    this.element.style.zIndex = this._zIndex
   }
 
   checkScrollbar() {
