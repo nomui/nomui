@@ -39231,14 +39231,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     const formData = new FormData();
     if (option.data) {
       Object.keys(option.data).forEach((key) => {
-        const value = option.data[key];
+        const value = option.data[key]; // 先过滤 null / undefined，避免 FormData 转成 "null" / "undefined"
+        if (value === null || value === undefined) {
+          return;
+        } // 数组：元素逐个 append，同时过滤元素里的 null / undefined
         if (Array.isArray(value)) {
           value.forEach((item) => {
+            if (item === null || item === undefined) {
+              return;
+            }
             formData.append(`${key}[]`, item);
           });
           return;
-        }
-        formData.append(key, option.data[key]);
+        } // 普通值
+        formData.append(key, value);
       });
     }
     if (option.file instanceof Blob) {
@@ -40020,14 +40026,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     const formData = new FormData();
     if (option.data) {
       Object.keys(option.data).forEach((key) => {
-        const value = option.data[key];
+        const value = option.data[key]; // 先过滤 null / undefined，避免 FormData 转成 "null" / "undefined"
+        if (value === null || value === undefined) {
+          return;
+        } // 数组：元素逐个 append，同时过滤元素里的 null / undefined
         if (Array.isArray(value)) {
           value.forEach((item) => {
+            if (item === null || item === undefined) {
+              return;
+            }
             formData.append(`${key}[]`, item);
           });
           return;
-        }
-        formData.append(key, option.data[key]);
+        } // 普通值
+        formData.append(key, value);
       });
     }
     if (option.file instanceof Blob) {
