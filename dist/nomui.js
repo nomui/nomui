@@ -31977,7 +31977,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return;
       }
       const year = this.props.mode === "year" ? v : strArr[0];
-      const after = this.props.mode === "year" ? null : Math.abs(strArr[1]);
+      const after =
+        this.props.mode === "year"
+          ? null
+          : nomui.utils.isNumeric(strArr[1])
+          ? strArr[1]
+          : Math.abs(strArr[1]);
       this.year = year;
       switch (this.props.mode) {
         case "year":
