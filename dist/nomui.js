@@ -7007,7 +7007,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this._addPropStyle("subtitleWrap");
-      const { title, subtitle, icon, image, href, titleLevel } = this.props;
+      const {
+        title,
+        subtitle,
+        icon,
+        rightIcon,
+        image,
+        href,
+        titleLevel,
+      } = this.props;
       const children = [];
       if (isPlainObject(image)) {
         children.push(
@@ -7036,6 +7044,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: { "nom-caption-title": true },
         children: [title, subtitle && { tag: "small", children: subtitle }],
       });
+      if (rightIcon) {
+        children.push(
+          Component.extendProps(
+            { classes: { "nom-caption-right-icon": true } },
+            Component.normalizeIconProps(rightIcon)
+          )
+        );
+      }
       if (href) {
         this.setProps({ attrs: { href: href } });
       }

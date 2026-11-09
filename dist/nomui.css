@@ -5452,6 +5452,9 @@ body .nom-always-dark {
 .nom-caption > .nom-caption-image + .nom-caption-title {
   margin-left: 6px;
 }
+.nom-caption > .nom-caption-right-icon {
+  margin-left: 6px;
+}
 .nom-panel {
   background-color: var(--nom-bg-color);
   border-radius: var(--nom-panel-border-radius);
