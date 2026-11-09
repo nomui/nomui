@@ -11,7 +11,7 @@ class Caption extends Component {
 
   _config() {
     this._addPropStyle('subtitleWrap')
-    const { title, subtitle, icon, image, href, titleLevel } = this.props
+    const { title, subtitle, icon, rightIcon, image, href, titleLevel } = this.props
     const children = []
     if (isPlainObject(image)) {
       children.push(
@@ -35,6 +35,14 @@ class Caption extends Component {
       },
       children: [title, subtitle && { tag: 'small', children: subtitle }],
     })
+    if(rightIcon) {
+      children.push(
+        Component.extendProps(
+          { classes: { 'nom-caption-right-icon': true } },
+          Component.normalizeIconProps(rightIcon),
+        ),
+      )
+    }
     if (href) {
       this.setProps({ attrs: { href: href } })
     }

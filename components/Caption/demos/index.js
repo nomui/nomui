@@ -2,6 +2,7 @@ define([
   './basic.js',
   './with-subtitle.js',
   './with-icon.js',
+  './with-right-icon.js',
   './subtitle-wrap.js',
   './with-image.js',
   './with-title-level.js',
