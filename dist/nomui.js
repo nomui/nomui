@@ -7440,6 +7440,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     close(result) {
       const that = this;
+      if (this.props.closeToHide === true) {
+        this.hide();
+        return;
+      }
       if (!this.rendered) {
         return;
       }
@@ -7516,6 +7520,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     closeOnClickOutside: false,
     fit: false,
     adaptToFit: false,
+    closeToHide: false,
     okText: "确 定",
     cancelText: "取 消",
     onOk: (e) => {
@@ -20549,6 +20554,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     close(result) {
       const that = this;
+      if (this.props.closeToHide === true) {
+        this.hide();
+        return;
+      }
       document.removeEventListener(
         "mousedown",
         this._onDocumentMousedown,
@@ -20676,6 +20685,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     closeOnClickBackdrop: false,
     closeOnClickOutside: false,
     showBackdrop: true,
+    closeToHide: false,
     okText: "确 定",
     cancelText: "取 消",
     settle: "right",

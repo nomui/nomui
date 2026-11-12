@@ -105,7 +105,14 @@ class Drawer extends Component {
 
   close(result) {
     const that = this
+
+    if (this.props.closeToHide === true) {
+      this.hide()
+      return
+    }
+
     document.removeEventListener('mousedown', this._onDocumentMousedown, false)
+    
     if (!this.rendered) {
       return
     }
@@ -247,6 +254,7 @@ Drawer.defaults = {
   closeOnClickBackdrop: false,
   closeOnClickOutside: false,
   showBackdrop: true,
+  closeToHide: false,
   okText: '确 定',
   cancelText: '取 消',
   settle: 'right',

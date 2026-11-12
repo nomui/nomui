@@ -54,6 +54,11 @@ class Modal extends Component {
   close(result) {
     const that = this
 
+    if (this.props.closeToHide === true) {
+      this.hide()
+      return
+    }
+
     if (!this.rendered) {
       return
     }
@@ -141,6 +146,7 @@ Modal.defaults = {
   closeOnClickOutside: false,
   fit: false,
   adaptToFit: false,
+  closeToHide: false,
   okText: '确 定',
   cancelText: '取 消',
   onOk: (e) => {
