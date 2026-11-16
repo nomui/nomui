@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Flex from '../Flex/index'
 import List from '../List/index'
 import Textbox from '../Textbox/index'
-import {} from '../util/date'
+import { } from '../util/date'
 import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
@@ -765,7 +765,7 @@ class DatePicker extends Textbox {
   }
 
   _fixTimePickerHeight() {
-    if (!this.timePicker || !this.popup.rendered) {
+    if (!this.timePicker?.props || !this.popup.rendered) {
       return
     }
     const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
@@ -1084,14 +1084,14 @@ class DatePicker extends Textbox {
       day: this.day,
     }
 
-    if (this.props.value && this.props.showTime && this.timePicker) {
+    if (this.props.value && this.props.showTime && this.timePicker?.props) {
       if (!Date.isValid(this.props.value)) {
         return
       }
       this.timePicker.setValue(
         new Date(currentDate).format(this.props.showTime.format || 'HH:mm:ss'),
       )
-    } else if (!this.props.value && this.props.showTime && this.timePicker) {
+    } else if (!this.props.value && this.props.showTime && this.timePicker?.props) {
       this.timePicker.clearTime()
     }
   }
@@ -1160,7 +1160,7 @@ class DatePicker extends Textbox {
         n.classList.remove('nom-datepicker-item-week-selected')
       })
     }
-    if (this.props.showTime && this.timePicker && this.timePicker.props) {
+    if (this.props.showTime && this.timePicker?.props) {
       this.timePicker.clearTime()
     }
   }

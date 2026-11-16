@@ -19401,7 +19401,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _fixTimePickerHeight() {
-      if (!this.timePicker || !this.popup.rendered) {
+      if (!this.timePicker?.props || !this.popup.rendered) {
         return;
       }
       const h = this.popup.element.querySelector(".nom-datepicker-popup-bd")
@@ -19643,14 +19643,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.currentDateAfterMax =
         this.maxDateDay && currentDate.isAfter(new Date(this.maxDateDay));
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
-      if (this.props.value && this.props.showTime && this.timePicker) {
+      if (this.props.value && this.props.showTime && this.timePicker?.props) {
         if (!Date.isValid(this.props.value)) {
           return;
         }
         this.timePicker.setValue(
           new Date(currentDate).format(this.props.showTime.format || "HH:mm:ss")
         );
-      } else if (!this.props.value && this.props.showTime && this.timePicker) {
+      } else if (
+        !this.props.value &&
+        this.props.showTime &&
+        this.timePicker?.props
+      ) {
         this.timePicker.clearTime();
       }
     }
@@ -19715,7 +19719,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             n.classList.remove("nom-datepicker-item-week-selected");
           });
       }
-      if (this.props.showTime && this.timePicker && this.timePicker.props) {
+      if (this.props.showTime && this.timePicker?.props) {
         this.timePicker.clearTime();
       }
     }
