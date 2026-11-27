@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { shouldHandleFieldValue } from '../Field/Field'
 import Tr from '../Table/Tr'
 import { clone, extend, isFunction, isPlainObject } from '../util/index'
 
@@ -215,7 +216,7 @@ class GroupGridTr extends Tr {
       return false
     }
 
-    return true
+    return shouldHandleFieldValue(field, options)
   }
 }
 
