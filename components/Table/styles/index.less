@@ -215,14 +215,14 @@ table.nom-table {
     }
 
     .nom-table-sort-handler.p-type-sort {
-      visibility: hidden;
+      display: none;
     }
 
     .nom-table-filter-handler {
-      visibility: hidden;
+      display: none;
 
       &.nom-filter-active {
-        visibility: visible;
+        display: inline-flex;
       }
     }
 
@@ -246,11 +246,11 @@ table.nom-table {
       }
 
       .nom-table-sort-handler {
-        visibility: visible;
+        display: inline-flex;
       }
 
       .nom-table-filter-handler {
-        visibility: visible;
+        display: inline-flex;
       }
     }
   }
