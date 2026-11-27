@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
+import { shouldHandleFieldValue } from '../Field/Field'
 import { extend, isPlainObject } from '../util/index'
 
 class Group extends Field {
@@ -98,7 +99,7 @@ class Group extends Field {
     } else if (isPlainObject(value)) {
       Object.keys(value).forEach((key) => {
         const field = this.getField(key)
-        if (field) {
+        if (field && shouldHandleFieldValue(field, options)) {
           let fieldValue = value
           if (field.props.flatValue === false) {
             if (isPlainObject(value)) {
@@ -285,7 +286,7 @@ class Group extends Field {
       return false
     }
 
-    return true
+    return shouldHandleFieldValue(field, options)
   }
 }
 Group.defaults = {
