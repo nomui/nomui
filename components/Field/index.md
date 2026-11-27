@@ -11,6 +11,7 @@
 | labelAlign | 标签对齐方式 | `left`\|`right`\|`top` | `right` |
 | actionAlign | 操作按钮对齐方式,配置为 end 时即使 labelAlign 是 top,操作按钮也会保持在字段右侧 | `default`\|`end` | `default` |
 | invalidTip | 验证错误信息提示的配置（Tooltip 组件） | `object` | 参考 Tooltip |
+| handleValue | 是否参与 Group 或 GroupGrid 行的批量取值和赋值；设为 `false` 或函数返回 `false` 时跳过该字段 | `boolean`\|`({ field, options }) => boolean` | `true` |
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
 | extra | 表单元素的拓展展示内容 | `string` | - |
@@ -30,6 +31,8 @@
 | onValueChange | 值变化的时候触发 | `(changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj})=>void` | - |
 | dependencies | 监听兄弟字段值变化 | `[name]` | - |
 | onDependencyValueChange | 监听字段值发生变化触发事件，与`dependencies`结合使用 | `({name:string,newValue:boolean,oldValue:boolean,sender:obj,source:obj})=>void` | - |
+
+例如，配置 `handleValue: false` 可固定排除该字段；配置 `handleValue: ({ field }) => field.props.includeInValue === true` 可根据字段状态动态决定。函数在每次批量取值或赋值时按需执行，`options` 是本次操作的选项。原有字段过滤规则仍然生效。
 
 ## Rules item
 

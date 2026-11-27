@@ -13,6 +13,11 @@ import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
 
+export function shouldHandleFieldValue(field, options) {
+  const { handleValue } = field.props
+  return (isFunction(handleValue) ? handleValue({ field, options }) : handleValue) !== false
+}
+
 let nameSeq = 0
 
 class Field extends Component {
@@ -798,6 +803,7 @@ Field.defaults = {
   value: null,
   defaultValue: null,
   flatValue: false,
+  handleValue: true,
   span: null,
   notShowLabel: false,
   rules: [],

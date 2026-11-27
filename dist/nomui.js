@@ -9463,6 +9463,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
   }
   Component.register(FieldLabel);
+  function shouldHandleFieldValue(field, options) {
+    const { handleValue } = field.props;
+    return (
+      (isFunction(handleValue)
+        ? handleValue({ field, options })
+        : handleValue) !== false
+    );
+  }
   let nameSeq$1 = 0;
   class Field extends Component {
     constructor(props, ...mixins) {
@@ -10145,6 +10153,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     value: null,
     defaultValue: null,
     flatValue: false,
+    handleValue: true,
     span: null,
     notShowLabel: false,
     rules: [],
@@ -19953,7 +19962,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else if (isPlainObject(value)) {
         Object.keys(value).forEach((key) => {
           const field = this.getField(key);
-          if (field) {
+          if (field && shouldHandleFieldValue(field, options)) {
             let fieldValue = value;
             if (field.props.flatValue === false) {
               if (isPlainObject(value)) {
@@ -20103,7 +20112,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (ignoreFields.includes(field.name)) {
         return false;
       }
-      return true;
+      return shouldHandleFieldValue(field, options);
     }
   }
   Group.defaults = { fields: [], fieldDefaults: { component: Field } };
@@ -27170,7 +27179,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (ignoreFields.includes(field.name)) {
         return false;
       }
-      return true;
+      return shouldHandleFieldValue(field, options);
     }
   }
   class GroupGrid extends Field {
